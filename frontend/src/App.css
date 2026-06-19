@@ -1,0 +1,7 @@
+/* App-level layout — component styles are co-located */
+#root {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+}
