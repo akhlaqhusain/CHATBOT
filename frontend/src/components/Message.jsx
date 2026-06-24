@@ -49,7 +49,7 @@ function Message({ sender, text, isStreaming }) {
 
       <div className={`bubble ${isUser ? 'user-bubble' : 'bot-bubble'}`}>
         {!isUser && (
-          <div className="bot-label">Gemini</div>
+          <div className="bot-label">ChatBot</div>
         )}
         <div className="msg-text">
           {isStreaming && !text ? (
