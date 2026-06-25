@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { IoChatbubbleOutline } from 'react-icons/io5';
+import { IoChatbubbleOutline, IoTrashOutline } from 'react-icons/io5';
 import { PiDiamondsFourFill } from 'react-icons/pi';
 
-function Sidebar({ conversations, activeId, onSelect, onNewChat }) {
+function Sidebar({ conversations, activeId, onSelect, onNewChat, onDelete }) {
+  const [hoveredId, setHoveredId] = useState(null);
+
   const grouped = {
     Today: conversations.filter(c => c.group === 'Today'),
     Yesterday: conversations.filter(c => c.group === 'Yesterday'),
     'Previous 7 Days': conversations.filter(c => c.group === 'Previous 7 Days'),
+  };
+
+  const handleDelete = (e, id) => {
+    e.stopPropagation(); // don't trigger onSelect
+    if (confirm('Delete this conversation?')) {
+      onDelete(id);
+    }
   };
 
   return (
@@ -28,36 +37,39 @@ function Sidebar({ conversations, activeId, onSelect, onNewChat }) {
 
       {/* History */}
       <nav className="sidebar-nav">
+        {conversations.length === 0 && (
+          <p className="no-chats">No conversations yet</p>
+        )}
         {Object.entries(grouped).map(([label, items]) =>
           items.length > 0 ? (
             <div className="nav-group" key={label}>
               <span className="nav-group-label">{label}</span>
               {items.map(c => (
-                <button
+                <div
                   key={c.id}
                   className={`nav-item ${c.id === activeId ? 'active' : ''}`}
                   onClick={() => onSelect(c.id)}
+                  onMouseEnter={() => setHoveredId(c.id)}
+                  onMouseLeave={() => setHoveredId(null)}
                   title={c.title}
                 >
-                  <IoChatbubbleOutline size={14} />
+                  <IoChatbubbleOutline size={14} className="nav-icon" />
                   <span className="nav-item-title">{c.title}</span>
-                </button>
+                  {(hoveredId === c.id || activeId === c.id) && (
+                    <button
+                      className="delete-btn"
+                      onClick={(e) => handleDelete(e, c.id)}
+                      title="Delete"
+                    >
+                      <IoTrashOutline size={13} />
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
           ) : null
         )}
       </nav>
-
-      {/* Footer */}
-      <div className="sidebar-footer">
-        <div className="user-row">
-          <div className="avatar">A</div>
-          <div className="user-info">
-            <span className="user-name">Akhlaq Husain</span>
-            <span className="user-plan">Premium Plan</span>
-          </div>
-        </div>
-      </div>
 
       <style>{`
         .sidebar {
@@ -113,6 +125,13 @@ function Sidebar({ conversations, activeId, onSelect, onNewChat }) {
           padding: 4px 8px;
         }
 
+        .no-chats {
+          font-size: 12px;
+          color: var(--text-muted);
+          text-align: center;
+          padding: 20px 0;
+        }
+
         .nav-group {
           margin-bottom: 16px;
         }
@@ -142,6 +161,7 @@ function Sidebar({ conversations, activeId, onSelect, onNewChat }) {
           cursor: pointer;
           text-align: left;
           transition: background 0.12s, color 0.12s;
+          position: relative;
         }
         .nav-item:hover {
           background: var(--bg-hover);
@@ -151,55 +171,31 @@ function Sidebar({ conversations, activeId, onSelect, onNewChat }) {
           background: var(--bg-active);
           color: var(--text-primary);
         }
+        .nav-icon {
+          flex-shrink: 0;
+        }
         .nav-item-title {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          flex: 1;
         }
 
-        .sidebar-footer {
-          padding: 12px;
-          border-top: 1px solid var(--border);
-        }
-
-        .user-row {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 8px;
-          border-radius: var(--radius-sm);
-          cursor: pointer;
-          transition: background 0.12s;
-        }
-        .user-row:hover { background: var(--bg-hover); }
-
-        .avatar {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, var(--accent), #c084fc);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 13px;
-          font-weight: 600;
-          color: #fff;
+        .delete-btn {
           flex-shrink: 0;
-        }
-
-        .user-info {
-          display: flex;
-          flex-direction: column;
-          gap: 1px;
-        }
-        .user-name {
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--text-primary);
-        }
-        .user-plan {
-          font-size: 11px;
+          background: none;
+          border: none;
           color: var(--text-muted);
+          cursor: pointer;
+          padding: 2px 4px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          transition: color 0.12s, background 0.12s;
+        }
+        .delete-btn:hover {
+          color: #f87171;
+          background: rgba(239,68,68,0.12);
         }
       `}</style>
     </aside>
