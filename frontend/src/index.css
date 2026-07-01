@@ -1,72 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Palette */
-  --bg-app:          #0d0d0f;
-  --bg-sidebar:      #111113;
-  --bg-chat:         #0d0d0f;
-  --bg-message-user: #1e1e24;
-  --bg-message-bot:  transparent;
-  --bg-input:        #1a1a1f;
-  --bg-hover:        #1c1c22;
-  --bg-active:       #222228;
+  /* Warm slate dark palette */
+  --bg-app:       #13121a;
+  --bg-sidebar:   #0f0e15;
+  --bg-chat:      #13121a;
+  --bg-input:     #1c1b25;
+  --bg-hover:     #1e1d28;
+  --bg-active:    #252432;
+  --bg-user-msg:  #1e1c2e;
 
-  --border:          rgba(255,255,255,0.07);
-  --border-input:    rgba(255,255,255,0.12);
+  --border:       rgba(255,255,255,0.06);
+  --border-input: rgba(255,255,255,0.1);
 
-  --text-primary:    #f0eff4;
-  --text-secondary:  #8b8a96;
-  --text-muted:      #55545f;
-  --text-user:       #e8e7f0;
+  --text-primary:   #eceaf4;
+  --text-secondary: #8f8da0;
+  --text-muted:     #524f66;
 
-  --accent:          #7c5cfc;
-  --accent-hover:    #9175fd;
-  --accent-glow:     rgba(124, 92, 252, 0.25);
+  --accent:       #7b6ef6;
+  --accent-light: #9d93f8;
+  --accent-glow:  rgba(123, 110, 246, 0.2);
+  --accent-dim:   rgba(123, 110, 246, 0.12);
 
-  --user-bubble:     #1e1a2e;
-  --user-border:     rgba(124, 92, 252, 0.2);
+  --user-border:  rgba(123, 110, 246, 0.18);
+  --danger:       #f87171;
+  --danger-dim:   rgba(248, 113, 113, 0.1);
 
-  /* Typography */
   --font: 'Inter', system-ui, sans-serif;
-
-  /* Spacing */
-  --sidebar-w: 260px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --sidebar-w: 256px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
+html, body { height: 100%; width: 100%; overflow: hidden; }
 
 body {
   font-family: var(--font);
   background: var(--bg-app);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  font-size: 14px;
 }
 
-/* ── Root layout: sidebar + chat side by side ─────────────────────────── */
 #root {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;   /* children fill full height */
   width: 100vw;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }

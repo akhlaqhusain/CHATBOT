@@ -5,16 +5,13 @@ import { getConversations, createConversation, deleteConversation } from './api'
 
 function App() {
   const [conversations, setConversations] = useState([]);
-  const [activeId, setActiveId]           = useState(null);
+  const [activeId,      setActiveId]      = useState(null);
 
-  // Load sidebar conversations on mount
-  useEffect(() => {
-    loadConversations();
-  }, []);
+  useEffect(() => { loadConversations(); }, []);
 
   const loadConversations = async () => {
     try {
-      const data = await getConversations();   // axios call → already parsed JSON
+      const data = await getConversations();
       setConversations(data);
     } catch (err) {
       console.error('Failed to load conversations:', err.message);
@@ -31,12 +28,9 @@ function App() {
     }
   };
 
-  const handleSelect = (id) => setActiveId(id);
-
-  // Called by ChatWindow after first message to update sidebar title
   const handleTitleUpdate = (id, newTitle) => {
     setConversations(prev =>
-      prev.map(c => (c.id === id ? { ...c, title: newTitle } : c))
+      prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
     );
   };
 
@@ -46,7 +40,7 @@ function App() {
       setConversations(prev => prev.filter(c => c.id !== id));
       if (activeId === id) setActiveId(null);
     } catch (err) {
-      console.error('Failed to delete conversation:', err.message);
+      console.error('Failed to delete:', err.message);
     }
   };
 
@@ -55,7 +49,7 @@ function App() {
       <Sidebar
         conversations={conversations}
         activeId={activeId}
-        onSelect={handleSelect}
+        onSelect={setActiveId}
         onNewChat={handleNewChat}
         onDelete={handleDelete}
       />
